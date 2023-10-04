@@ -7,9 +7,8 @@ import { User } from './src/modules/users/database/user.entity';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
 
-// const SnakeNamingStrategy =
-//   require('typeorm-naming-strategies').SnakeNamingStrategy;
-
+const SnakeNamingStrategy =
+  require('typeorm-naming-strategies').SnakeNamingStrategy;
 const config: MysqlConnectionOptions = {
   host: process.env.DB_HOST,
   port: 3306,
@@ -19,7 +18,7 @@ const config: MysqlConnectionOptions = {
   database: process.env.DB_DATABASE || '',
   entities: [User, Product],
   synchronize: process.env.DB_SYNCHRONIZE === 'true',
-  // namingStrategy: new SnakeNamingStrategy(),
+  namingStrategy: new SnakeNamingStrategy(),
 };
 
 export default config;
