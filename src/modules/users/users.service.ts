@@ -1,6 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common';
+import {
+  Injectable,
+  ConflictException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeepPartial, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { User } from './database/user.entity';
 import { UserDto } from './dtos/user.dto';
 import * as bcrypt from 'bcrypt';
@@ -11,14 +15,14 @@ import { LoginUserDto } from './dtos/login-user.dto';
 export class UsersService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>,
-    ) {}
-   jwtSecret = process.env.JWT_SECRET; // Thay đổi key bằng một giá trị thực tế.
+  ) {}
+  jwtSecret = process.env.JWT_SECRET; // Thay đổi key bằng một giá trị thực tế.
 
   async checkDuplicate(userCheckDto: UserDto) {
-    const { userName, email } = userCheckDto;
+    const { username, email } = userCheckDto;
     const users = await this.getUsers();
     const isUsernameDuplicate = users.some(
-      (user) => user.userName === userName,
+      (user) => user.username === username,
     );
     const isEmailDuplicate = users.some((user) => user.email === email);
     if (isEmailDuplicate) {
@@ -32,36 +36,45 @@ export class UsersService {
         msg: 'Username already exists',
         status: 400,
       };
-      
     }
-    return false
+    return false;
   }
   async getUsers(): Promise<User[]> {
     return await this.usersRepository.find();
   }
 
-  async getUser(_id: number): Promise<User[]> {
-    return await this.usersRepository.find({
-      select: ['userName', 'email', 'role'],
-      where: [{ id: _id }],
-    });
+  async getOne(id: number) {
+    const user = await this.usersRepository.findOne({ where: { id: id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    return user;
   }
 
   async createUser(user: UserDto) {
-    const { userName, email, password, role } = user;
+    const { username, email, password, role } = user;
     const hasPassword = await bcrypt.hash(password, 10);
+    // console.log(user, 'user');
+    
     const newUser = {
-      userName,
+      username,
       email,
       password: hasPassword,
-      role,
-    }
+      role : +role,
+    };
+    // console.log(newUser, 'newUser');
     const checkDuplicate = await this.checkDuplicate(newUser);
     if (checkDuplicate) {
       return checkDuplicate;
     }
+ 
+    
     this.usersRepository.create(newUser);
     await this.usersRepository.save(newUser);
+    console.log(newUser, 'newUser');
+    
     return {
       msg: 'User created successfully',
       status: 200,
@@ -69,11 +82,12 @@ export class UsersService {
     };
   }
 
-  
-  async login(loginUserDto: LoginUserDto){
-    const { userName, password } = loginUserDto;
+  async login(loginUserDto: LoginUserDto) {
+    console.log(loginUserDto, 'lllllllllllllll');
+    
+    const { username, password } = loginUserDto;
     const users = await this.getUsers();
-    const user = users.find((u) => u.userName === userName);
+    const user = users.find((u) => u.username === username);
 
     if (!user) {
       return false; // Người dùng không tồn tại
@@ -83,26 +97,64 @@ export class UsersService {
     if (!isPasswordValid) {
       return null; // Sai mật khẩu
     }
-    const accessToken = jwt.sign({ username: user.userName }, this.jwtSecret, {
+    const accessToken = jwt.sign({ username: user.username }, this.jwtSecret, {
       expiresIn: '1h', // Thời gian hết hạn của JWT
     });
-    
+
     return {
       msg: 'Login successful',
       status: 200,
-      data:{
-        username: user.userName,
-        role: user.role, 
+      data: {
+        username: user.username,
+        role: user.role,
         accessToken,
-      }
+      },
     };
   }
 
-  async updateUser(user: UserDto) {
-    this.usersRepository.save(user);
+  async updateUser(id: number, updateUserDto: UserDto) {
+    const { username, password } = updateUserDto;
+    const user = await this.usersRepository.findOne({ where: { id: id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    if (username) {
+      const existingUser = await this.usersRepository.findOne({
+        where: { username: username },
+      });
+      if (existingUser && existingUser.id !== user.id) {
+        throw new ConflictException(
+          `Username ${updateUserDto.username} is already in use`,
+        );
+      }
+      user.username = username;
+    }
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+
+    // Lưu thông tin người dùng đã cập nhật vào cơ sở dữ liệu
+    await this.usersRepository.save(user);
+    return {
+      msg: 'User updated successfully',
+      status: 200,
+      data: user,
+    };
   }
 
-  async deleteUser(user: User) {
-    this.usersRepository.delete(user);
+  async deleteUser(id: number) {
+    const user = await this.usersRepository.findOne({ where: { id: id } });
+
+    if (!user) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+
+    await this.usersRepository.remove(user);
+    return {
+      msg: 'User deleted successfully',
+      status: 200,
+    };
   }
 }

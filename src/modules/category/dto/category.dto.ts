@@ -1,12 +1,7 @@
 import { IsNumber, IsString, IsNotEmpty, IsUrl } from 'class-validator';
 
-export class LoginUserDto {
+export class CategoryDto {
   @IsString()
   @IsNotEmpty()
-  username: string;
-
-  @IsString()
-  @IsNotEmpty()
-  password: string;
-
+  name: string;
 }

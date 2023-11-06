@@ -6,6 +6,8 @@ import { User } from './src/modules/users/database/user.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
+console.log(__dirname, 'dirname');
+
 
 const SnakeNamingStrategy =
   require('typeorm-naming-strategies').SnakeNamingStrategy;
@@ -16,8 +18,8 @@ const config: MysqlConnectionOptions = {
   password: process.env.DB_PASSWORD || '',
   type: 'mysql',
   database: process.env.DB_DATABASE || '',
-  entities: [User, Product],
-  synchronize: process.env.DB_SYNCHRONIZE === 'true',
+  entities: [ __dirname + '/**/**/**/*.entity{.ts,.js}'],
+  synchronize: false, 
   namingStrategy: new SnakeNamingStrategy(),
 };
 
