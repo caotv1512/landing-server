@@ -5,7 +5,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-
+ 
 export const TableName = 'product';
 @Entity(TableName)
 export class Product {
@@ -30,16 +30,10 @@ export class Product {
   @Column()
   quantity: number;
 
-  // @Column()
-  // shop: boolean;
-
   @CreateDateColumn()
   @Exclude()
   createdAt: Date;
 
   @Column()
   updatedAt: Date;
-
-  @Column()
-  content: string;
 }

@@ -7,6 +7,7 @@ import {
   Delete,
   Param,
   UnauthorizedException,
+  NotFoundException,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './database/user.entity';
@@ -23,8 +24,8 @@ export class UsersController {
   }
 
   @Get(':id')
-  get(@Param() params) {
-    return this.usersService.getUser(params.id);
+  async getOneUser(@Param('id') id: number) {
+   return await this.usersService.getOne(id);
   }
 
   @Post()
@@ -32,14 +33,28 @@ export class UsersController {
     return this.usersService.createUser(user);
   }
 
-  @Put()
-  update(@Body() user: UserDto) {
-    return this.usersService.updateUser(user);
+  @Put(':id')
+  async updateUser(@Param('id') id: number, @Body() updateUserDto: UserDto) {
+    try {
+      return await this.usersService.updateUser(id, updateUserDto);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Delete(':id')
-  deleteUser(@Param() params) {
-    return this.usersService.deleteUser(params.id);
+  async deleteUser(@Param('id') id: number) {
+    try {
+     return await this.usersService.deleteUser(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) {
+        throw new NotFoundException(error.message);
+      }
+      throw error;
+    }
   }
 
   @Post('login')

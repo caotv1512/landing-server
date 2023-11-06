@@ -17,4 +17,12 @@ export class ProductDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @IsNumber()
+  @IsNotEmpty()
+  discount: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  quantity: number;
 }

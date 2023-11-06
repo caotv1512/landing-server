@@ -7,7 +7,7 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { Patch } from '@nestjs/common/decorators';
+import { Patch, UseGuards } from '@nestjs/common/decorators';
 import { ProductDto } from './dto/product.dto';
 import { ProductService } from './product.service';
 
@@ -21,6 +21,7 @@ export class ProductController {
   }
 
   @Post('/')
+  @UseGuards()
   async createUsers(@Body() data: ProductDto) {
     const product = await this.productService.create(data);
     return {

@@ -16,7 +16,17 @@ export class ProductService {
   ) {}
 
   async create(data: ProductDto) {
-    const product = this.productRepo.create(data);
+    const product = {
+      title: data.title,
+      image: data.image,
+      price: data.price,
+      description: data.description,
+      discount: data.discount,
+      quantity: data.quantity,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.productRepo.create(product);
     await this.productRepo.save(product);
     return product;
   }
