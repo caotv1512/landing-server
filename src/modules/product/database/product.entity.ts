@@ -3,9 +3,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
- 
+import { Category } from '../../category/database/category.entity';
+
 export const TableName = 'product';
 @Entity(TableName)
 export class Product {
@@ -36,4 +41,8 @@ export class Product {
 
   @Column()
   updatedAt: Date;
+
+  @ManyToOne(() => Category, (category) => category.product)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 }

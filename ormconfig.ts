@@ -8,7 +8,6 @@ import { User } from './src/modules/users/database/user.entity';
 require('dotenv').config();
 console.log(__dirname, 'dirname');
 
-
 const SnakeNamingStrategy =
   require('typeorm-naming-strategies').SnakeNamingStrategy;
 const config: MysqlConnectionOptions = {
@@ -18,8 +17,8 @@ const config: MysqlConnectionOptions = {
   password: process.env.DB_PASSWORD || '',
   type: 'mysql',
   database: process.env.DB_DATABASE || '',
-  entities: [ __dirname + '/**/**/**/*.entity{.ts,.js}'],
-  synchronize: false, 
+  entities: [__dirname + '/**/**/**/*.entity{.ts,.js}'],
+  synchronize: true,
   namingStrategy: new SnakeNamingStrategy(),
 };
 

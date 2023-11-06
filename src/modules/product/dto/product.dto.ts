@@ -25,4 +25,8 @@ export class ProductDto {
   @IsNumber()
   @IsNotEmpty()
   quantity: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  categoryId: number;
 }
