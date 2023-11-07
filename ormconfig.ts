@@ -6,7 +6,6 @@ import { User } from './src/modules/users/database/user.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
-console.log(__dirname, 'dirname');
 
 const SnakeNamingStrategy =
   require('typeorm-naming-strategies').SnakeNamingStrategy;
