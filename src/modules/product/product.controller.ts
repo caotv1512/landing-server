@@ -31,15 +31,14 @@ export class ProductController {
   @UseGuards()
   @UseInterceptors(FileInterceptor('file'))
   async createUsers(@UploadedFile() file: Express.Multer.File, @Body() data) {
-    console.log(file, 'ahihi');
     const newProduct: ProductDto = {
       title: data.title,
       image: 'file',
       price: Number(data.price),
       description: data.description,
-      discount: +data.discount,
-      quantity: +data.quantity,
-      categoryId: +data.categoryId,
+      discount: +data.discount || 0,
+      quantity: +data.quantity || 0,
+      categoryId: +data.categoryId || 0,
     };
 
     const product = await this.productService.create(file, newProduct);
