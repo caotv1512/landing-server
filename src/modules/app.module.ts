@@ -9,10 +9,12 @@ import { GoogleStrategy } from './auth/google.strategy';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ProductCustomerModule } from './product-customer/product-customer.module';
+import { EmailService } from './email/email.service';
+import { ContactController } from './email/contact.conntroller';
 
 @Module({
   imports: [TypeOrmModule.forRoot(config), UsersModule, ProductModule, ProductCustomerModule, CloudinaryModule],
-  controllers: [AppController],
-  providers: [AppService, GoogleStrategy, CloudinaryService],
+  controllers: [AppController, ContactController],
+  providers: [AppService, GoogleStrategy, CloudinaryService, EmailService],
 })
 export class AppModule {}

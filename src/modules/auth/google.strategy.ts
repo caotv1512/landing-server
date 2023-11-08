@@ -5,7 +5,6 @@ import { config } from 'dotenv';
 import { Injectable } from '@nestjs/common';
 
 config();
-console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
@@ -21,7 +20,6 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
 
   async validate (accessToken: string, refreshToken: string, profile: any, done: VerifyCallback): Promise<any> {
     const { name, emails, photos } = profile
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaa');
     console.log(profile);
     
     const user = {

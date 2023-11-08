@@ -10,9 +10,11 @@ async function bootstrap() {
   app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   await app.listen(process.env.APP_PORT || 3000);
-  app.enableCors(); 
+  app.enableCors();
   console.log(
     `app listen on port: http://localhost:${process.env.APP_PORT || 3000}`,
   );
+  // Gracefully shutdown the server.
+  app.enableShutdownHooks();
 }
 bootstrap();

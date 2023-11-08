@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-
-import { Product } from 'src/modules/product/database/product.entity';
 import { MysqlConnectionOptions } from 'typeorm/driver/mysql/MysqlConnectionOptions';
-import { User } from './src/modules/users/database/user.entity';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('dotenv').config();
@@ -17,7 +14,7 @@ const config: MysqlConnectionOptions = {
   type: 'mysql',
   database: process.env.DB_DATABASE || '',
   entities: [__dirname + '/**/**/**/*.entity{.ts,.js}'],
-  synchronize: true,
+  synchronize: false,
   namingStrategy: new SnakeNamingStrategy(),
 };
 

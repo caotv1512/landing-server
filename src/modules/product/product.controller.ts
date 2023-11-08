@@ -10,6 +10,7 @@ import {
 import {
   Delete,
   Patch,
+  Put,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -54,9 +55,22 @@ export class ProductController {
     return this.productService.findOnly(id);
   }
 
-  @Patch(':id')
-  async updateUser(@Param('id') id: number, @Body() data: ProductDto) {
-    return await this.productService.update(id, data);
+  @Put('/:id')
+  @UseGuards()
+  @UseInterceptors(FileInterceptor('file'))
+  async updateUser(@UploadedFile() file: Express.Multer.File,@Param('id') id: number, @Body() data: ProductDto) {
+    console.log(data, 'ahihi');
+    
+    const newProduct: ProductDto = {
+      title: data.title,
+      image: 'file',
+      price: Number(data.price),
+      description: data.description,
+      discount: +data.discount || 0,
+      quantity: +data.quantity || 0,
+      categoryId: +data.categoryId || 0,
+    };
+    return await this.productService.update(id, file, newProduct);
   }
 
   @Delete('/:id')
