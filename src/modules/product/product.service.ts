@@ -84,14 +84,14 @@ export class ProductService {
     throw new BadRequestException({ action: 'Can not find product data' });
   }
 
-  async update(id: number, data: ProductDto) {
+  async update(id: number,file, data) {
     let product = await this.productRepo.findOne({ where: { id: id } });
     if (!product) {
       throw new NotFoundException('Id not found.');
     }
     try {
       product.title = data.title;
-      product.image = data.image;
+      product.image = file;
       product.price = data.price;
       product.description = data.description;
       await this.productRepo.update({ id }, product);
