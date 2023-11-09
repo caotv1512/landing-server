@@ -18,7 +18,8 @@ import {
 import { ProductDto } from './dto/product.dto';
 import { ProductService } from './product.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import 'multer';
+import * as multer from 'multer';
+
 
 @Controller('product')
 export class ProductController {
@@ -60,8 +61,6 @@ export class ProductController {
   @UseGuards()
   @UseInterceptors(FileInterceptor('file'))
   async updateUser(@UploadedFile() file: Express.Multer.File,@Param('id') id: number, @Body() data: ProductDto) {
-    console.log(data, 'ahihi');
-    
     const newProduct: ProductDto = {
       title: data.title,
       image: 'file',
