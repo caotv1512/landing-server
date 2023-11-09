@@ -22,12 +22,6 @@ export class ProductCustomerService {
   ) {}
 
   async create(file, data: ProductCustomerDto) {
-    const category = await this.categoryRepo.findOne({
-      where: { id: data.categoryId },
-    });
-    if (!category) {
-      throw new Error('Invalid categoryId');
-    }
     const image = await this.cloudinaryService.uploadFile(file);
     const product = {
       title: data.title,
@@ -38,7 +32,6 @@ export class ProductCustomerService {
       quantity: data.quantity,
       createdAt: new Date(),
       updatedAt: new Date(),
-      category: category,
     };
     this.productRepo.create(product);
     await this.productRepo.save(product);

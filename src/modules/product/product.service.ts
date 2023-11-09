@@ -46,9 +46,15 @@ export class ProductService {
   }
 
   async findAll() {
-    const data = await this.productRepo.find();
-    console.log(data);
-    return data;
+    const data = await this.productRepo.find({ relations: ['category'] });
+    return data.map((item) => {
+      return {
+        ...item,
+        category: item.category.id
+      }
+    })
+    // console.log(newData);
+    // return data;
   }
 
   async findOnly(id) {
