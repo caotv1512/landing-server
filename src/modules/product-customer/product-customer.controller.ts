@@ -31,7 +31,7 @@ export class ProductCustomerController {
   @Post('/')
   @UseGuards()
   @UseInterceptors(FileInterceptor('file'))
-  async createUsers(@UploadedFile() file: Express.Multer.File, @Body() data) {
+  async createUsers(@UploadedFile() file:any, @Body() data) {
     const newProductCustomer: ProductCustomerDto = {
       title: data.title,
       image: 'file',

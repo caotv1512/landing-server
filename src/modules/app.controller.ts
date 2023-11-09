@@ -25,11 +25,11 @@ export class AppController {
     return this.appService.googleLogin(req)
   }
 
-  @Post('upload')
-  @UseInterceptors(FileInterceptor('file'))
-  uploadImage(@UploadedFile() file: Express.Multer.File) {
-    console.log(file, 'ahihi');
+  // @Post('upload')
+  // @UseInterceptors(FileInterceptor('file'))
+  // uploadImage(@UploadedFile() file: Express.Multer.File) {
+  //   console.log(file, 'ahihi');
     
-    return this.cloudinaryService.uploadFile(file);
-  }
+  //   return this.cloudinaryService.uploadFile(file);
+  // }
 }
