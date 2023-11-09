@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import { AuthGuard } from '@nestjs/passport';
 import { CloudinaryService } from './cloudinary/cloudinary.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import * as multer from 'multer';
+import { Express } from 'express'; 
 
 
 @Controller('')
