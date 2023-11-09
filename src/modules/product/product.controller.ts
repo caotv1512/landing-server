@@ -18,6 +18,7 @@ import {
 import { ProductDto } from './dto/product.dto';
 import { ProductService } from './product.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import 'multer';
 
 @Controller('product')
 export class ProductController {
