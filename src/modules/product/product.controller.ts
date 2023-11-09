@@ -33,7 +33,7 @@ export class ProductController {
   @Post('/')
   @UseGuards()
   @UseInterceptors(FileInterceptor('file'))
-  async createUsers(@UploadedFile() file: Express.Multer.File, @Body() data) {
+  async createUsers(@UploadedFile() file: File, @Body() data) {
     const newProduct: ProductDto = {
       title: data.title,
       image: 'file',
@@ -60,7 +60,7 @@ export class ProductController {
   @Put('/:id')
   @UseGuards()
   @UseInterceptors(FileInterceptor('file'))
-  async updateUser(@UploadedFile() file: Express.Multer.File,@Param('id') id: number, @Body() data: ProductDto) {
+  async updateUser(@UploadedFile() file: File,@Param('id') id: number, @Body() data: ProductDto) {
     const newProduct: ProductDto = {
       title: data.title,
       image: 'file',
