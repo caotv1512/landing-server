@@ -60,18 +60,18 @@ export class ProductController {
   @Put('/:id')
   @UseGuards()
   @UseInterceptors(FileInterceptor('file'))
-  async updateUser(@UploadedFile() file: File,@Param('id') id: number, @Body() data: ProductDto) {
-    const newProduct: ProductDto = {
-      title: data.title,
-      image: 'file',
-      price: Number(data.price),
-      description: data.description,
-      discount: +data.discount || 0,
-      quantity: +data.quantity || 0,
-      categoryId: +data.categoryId || 0,
-    };
-    return await this.productService.update(id, file, newProduct);
-  }
+  // async updateUser(@UploadedFile() file: File,@Param('id') id: number, @Body() data: ProductDto) {
+  //   const newProduct: ProductDto = {
+  //     title: data.title,
+  //     image: 'file',
+  //     price: Number(data.price),
+  //     description: data.description,
+  //     discount: +data.discount || 0,
+  //     quantity: +data.quantity || 0,
+  //     categoryId: +data.categoryId || 0,
+  //   };
+  //   return await this.productService.update(id, file, newProduct);
+  // }
 
   @Delete('/:id')
   deleteProduct(@Param('id') id) {
