@@ -30,27 +30,7 @@ export class ProductController {
     return this.productService.findAll();
   }
 
-  @Post('/')
-  @UseGuards()
-  @UseInterceptors(FileInterceptor('file'))
-  async createUsers(@UploadedFile() file: File, @Body() data) {
-    const newProduct: ProductDto = {
-      title: data.title,
-      image: 'file',
-      price: Number(data.price),
-      description: data.description,
-      discount: +data.discount || 0,
-      quantity: +data.quantity || 0,
-      categoryId: +data.categoryId || 0,
-    };
 
-    const product = await this.productService.create(file, newProduct);
-    return {
-      statusCode: HttpStatus.OK,
-      message: 'product created successfully',
-      product,
-    };
-  }
 
   @Get('/:id')
   getOnly(@Param() id) {
@@ -60,18 +40,18 @@ export class ProductController {
   @Put('/:id')
   @UseGuards()
   @UseInterceptors(FileInterceptor('file'))
-  // async updateUser(@UploadedFile() file: File,@Param('id') id: number, @Body() data: ProductDto) {
-  //   const newProduct: ProductDto = {
-  //     title: data.title,
-  //     image: 'file',
-  //     price: Number(data.price),
-  //     description: data.description,
-  //     discount: +data.discount || 0,
-  //     quantity: +data.quantity || 0,
-  //     categoryId: +data.categoryId || 0,
-  //   };
-  //   return await this.productService.update(id, file, newProduct);
-  // }
+  async updateUser(@UploadedFile() file: Express.Multer.File,@Param('id') id: number, @Body() data: ProductDto) {
+    const newProduct: ProductDto = {
+      title: data.title,
+      image: 'file',
+      price: Number(data.price),
+      description: data.description,
+      discount: +data.discount || 0,
+      quantity: +data.quantity || 0,
+      categoryId: +data.categoryId || 0,
+    };
+    return await this.productService.update(id, file, newProduct);
+  }
 
   @Delete('/:id')
   deleteProduct(@Param('id') id) {
