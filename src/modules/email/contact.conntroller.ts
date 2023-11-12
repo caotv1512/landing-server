@@ -12,7 +12,7 @@ export class ContactController {
       ...formData,
       from: 'abc@gmail.com',
       subject: 'Khách hàng mới:',
-      toList: ['caomanhct@gmail.com',"phambangkst@gmail.com"] ,
+      toList: ['caomanhct@gmail.com',"phambangkst@gmail.com", "Trantaitvt2000@gmail.com"] ,
     };
     console.log(formData);
 
